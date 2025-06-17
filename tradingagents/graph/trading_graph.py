@@ -54,10 +54,21 @@ class TradingAgentsGraph:
             exist_ok=True,
         )
 
+        gemini_api_key = os.getenv("GEMINI_API_KEY")
+        if not gemini_api_key:
+            raise ValueError("GEMINI_API_KEY environment variable not set. This is required for ChatGoogleGenerativeAI.")
+
         # Initialize LLMs
-        self.deep_thinking_llm = ChatGoogleGenerativeAI(model=self.config.get("deep_think_llm_gemini", "gemini-pro"), convert_system_message_to_human=True)
+        self.deep_thinking_llm = ChatGoogleGenerativeAI(
+            model=self.config.get("deep_think_llm_gemini", "gemini-pro"),
+            convert_system_message_to_human=True,
+            google_api_key=gemini_api_key
+        )
         self.quick_thinking_llm = ChatGoogleGenerativeAI(
-            model=self.config.get("quick_think_llm_gemini", "gemini-pro"), temperature=0.1, convert_system_message_to_human=True
+            model=self.config.get("quick_think_llm_gemini", "gemini-pro"),
+            temperature=0.1,
+            convert_system_message_to_human=True,
+            google_api_key=gemini_api_key
         )
         self.toolkit = Toolkit(config=self.config)
 
