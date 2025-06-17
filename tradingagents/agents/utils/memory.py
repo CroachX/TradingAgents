@@ -1,21 +1,25 @@
 import chromadb
 from chromadb.config import Settings
-from openai import OpenAI
+import google.generativeai as genai
 import numpy as np
+import os
 
 
 class FinancialSituationMemory:
     def __init__(self, name):
-        self.client = OpenAI()
+        # Ensure Gemini API is configured (it should be if interface.py was loaded)
+        if not os.getenv("GEMINI_API_KEY"):
+            raise ValueError("GEMINI_API_KEY environment variable not set. Make sure it's configured globally.")
+        # It's assumed genai.configure(api_key=os.getenv("GEMINI_API_KEY")) has been called elsewhere,
+        # e.g. in interface.py or a main script.
+        self.embedding_model = genai.GenerativeModel('text-embedding-004')
         self.chroma_client = chromadb.Client(Settings(allow_reset=True))
         self.situation_collection = self.chroma_client.create_collection(name=name)
 
-    def get_embedding(self, text):
-        """Get OpenAI embedding for a text"""
-        response = self.client.embeddings.create(
-            model="text-embedding-ada-002", input=text
-        )
-        return response.data[0].embedding
+    def get_gemini_embedding(self, text):
+        """Get Gemini embedding for a text"""
+        result = self.embedding_model.embed_content(text)
+        return result['embedding']
 
     def add_situations(self, situations_and_advice):
         """Add financial situations and their corresponding advice. Parameter is a list of tuples (situation, rec)"""
@@ -31,7 +35,7 @@ class FinancialSituationMemory:
             situations.append(situation)
             advice.append(recommendation)
             ids.append(str(offset + i))
-            embeddings.append(self.get_embedding(situation))
+            embeddings.append(self.get_gemini_embedding(situation))
 
         self.situation_collection.add(
             documents=situations,
@@ -41,8 +45,8 @@ class FinancialSituationMemory:
         )
 
     def get_memories(self, current_situation, n_matches=1):
-        """Find matching recommendations using OpenAI embeddings"""
-        query_embedding = self.get_embedding(current_situation)
+        """Find matching recommendations using Gemini embeddings"""
+        query_embedding = self.get_gemini_embedding(current_situation)
 
         results = self.situation_collection.query(
             query_embeddings=[query_embedding],
