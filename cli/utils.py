@@ -126,18 +126,17 @@ def select_shallow_thinking_agent() -> str:
     """Select shallow thinking llm engine using an interactive selection."""
 
     # Define shallow thinking llm engine options with their corresponding model names
-    SHALLOW_AGENT_OPTIONS = [
-        ("GPT-4o-mini - Fast and efficient for quick tasks", "gpt-4o-mini"),
-        ("GPT-4.1-nano - Ultra-lightweight model for basic operations", "gpt-4.1-nano"),
-        ("GPT-4.1-mini - Compact model with good performance", "gpt-4.1-mini"),
-        ("GPT-4o - Standard model with solid capabilities", "gpt-4o"),
+    MODEL_CHOICES = [
+        ("Gemini 1.5 Flash - Fast and efficient for most tasks", "gemini-1.5-flash-latest"),
+        ("Gemini 1.0 Pro - Balanced performance and capability", "gemini-1.0-pro"),
+        ("Gemini 1.5 Pro - Most capable model for complex tasks", "gemini-1.5-pro-latest"),
     ]
 
     choice = questionary.select(
         "Select Your [Quick-Thinking LLM Engine]:",
         choices=[
             questionary.Choice(display, value=value)
-            for display, value in SHALLOW_AGENT_OPTIONS
+            for display, value in MODEL_CHOICES
         ],
         instruction="\n- Use arrow keys to navigate\n- Press Enter to select",
         style=questionary.Style(
@@ -162,21 +161,17 @@ def select_deep_thinking_agent() -> str:
     """Select deep thinking llm engine using an interactive selection."""
 
     # Define deep thinking llm engine options with their corresponding model names
-    DEEP_AGENT_OPTIONS = [
-        ("GPT-4.1-nano - Ultra-lightweight model for basic operations", "gpt-4.1-nano"),
-        ("GPT-4.1-mini - Compact model with good performance", "gpt-4.1-mini"),
-        ("GPT-4o - Standard model with solid capabilities", "gpt-4o"),
-        ("o4-mini - Specialized reasoning model (compact)", "o4-mini"),
-        ("o3-mini - Advanced reasoning model (lightweight)", "o3-mini"),
-        ("o3 - Full advanced reasoning model", "o3"),
-        ("o1 - Premier reasoning and problem-solving model", "o1"),
+    MODEL_CHOICES = [
+        ("Gemini 1.5 Flash - Fast and efficient for most tasks", "gemini-1.5-flash-latest"),
+        ("Gemini 1.0 Pro - Balanced performance and capability", "gemini-1.0-pro"),
+        ("Gemini 1.5 Pro - Most capable model for complex tasks", "gemini-1.5-pro-latest"),
     ]
 
     choice = questionary.select(
         "Select Your [Deep-Thinking LLM Engine]:",
         choices=[
             questionary.Choice(display, value=value)
-            for display, value in DEEP_AGENT_OPTIONS
+            for display, value in MODEL_CHOICES
         ],
         instruction="\n- Use arrow keys to navigate\n- Press Enter to select",
         style=questionary.Style(
