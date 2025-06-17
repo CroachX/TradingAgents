@@ -5,14 +5,23 @@ import typer
 import logging
 import langchain
 
-# Configure logging to write to a file
-# This will create 'langchain_debug.log' in the directory from which the script is run.
+# Configure basicConfig for root logger
+# Set root to INFO to reduce verbosity from other libraries if they are too noisy at DEBUG
 logging.basicConfig(filename='langchain_debug.log',
-                    filemode='w',  # 'w' for overwrite, 'a' for append
-                    level=logging.DEBUG,
+                    filemode='w',  # 'w' for overwrite
+                    level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-# Enable Langchain's verbose debug mode - it will now use the configured logger
+# Get the Langchain logger and set its level to DEBUG
+# This ensures Langchain's specific debug messages are captured.
+langchain_logger = logging.getLogger('langchain')
+langchain_logger.setLevel(logging.DEBUG)
+
+# By default, child loggers (like 'langchain') propagate to root.
+# If basicConfig added a handler to root, langchain_logger will use it.
+# No need to add separate handlers unless specific formatting or multiple files are needed for langchain logs.
+
+# Enable Langchain's verbose debug mode - it will use the 'langchain' logger we configured.
 langchain.debug = True
 from rich.console import Console
 from rich.panel import Panel
