@@ -2,7 +2,17 @@ from typing import Optional
 import datetime
 import typer
 
+import logging
 import langchain
+
+# Configure logging to write to a file
+# This will create 'langchain_debug.log' in the directory from which the script is run.
+logging.basicConfig(filename='langchain_debug.log',
+                    filemode='w',  # 'w' for overwrite, 'a' for append
+                    level=logging.DEBUG,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# Enable Langchain's verbose debug mode - it will now use the configured logger
 langchain.debug = True
 from rich.console import Console
 from rich.panel import Panel
