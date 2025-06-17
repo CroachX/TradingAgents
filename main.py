@@ -1,6 +1,9 @@
 from tradingagents.graph.trading_graph import TradingAgentsGraph
 from tradingagents.default_config import DEFAULT_CONFIG
 
+import langchain
+langchain.debug = True
+
 # Create a custom config
 config = DEFAULT_CONFIG.copy()
 config["deep_think_llm_gemini"] = "gemini-1.0-pro"  # Use a different model

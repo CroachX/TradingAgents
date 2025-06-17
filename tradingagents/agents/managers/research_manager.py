@@ -36,6 +36,15 @@ Here are your past reflections on mistakes:
 Here is the debate:
 Debate History:
 {history}"""
+        print(f"--- Node: Research Manager ---")
+        print(f"Current Ticker: {state.get('company_of_interest', 'N/A')}")
+        print(f"Current Date: {state.get('trade_date', 'N/A')}")
+        print("Messages before LLM call:")
+        # This agent constructs a detailed prompt string
+        print(f"  Prompt being sent to LLM (first 200 chars): {prompt[:200]}...")
+        print(f"  Relevant state for prompt includes: market_report, sentiment_report, news_report, fundamentals_report, investment_debate_state history, and memories.")
+        print(f"-------------------------------------------------")
+
         response = llm.invoke(prompt)
 
         new_investment_debate_state = {

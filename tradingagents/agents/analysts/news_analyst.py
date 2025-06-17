@@ -45,6 +45,25 @@ def create_news_analyst(llm, toolkit):
         prompt = prompt.partial(ticker=ticker)
 
         chain = prompt | llm.bind_tools(tools)
+
+        print(f"--- Node: News Analyst ---")
+        print(f"Current Ticker: {state.get('company_of_interest', 'N/A')}")
+        print(f"Current Date: {state.get('trade_date', 'N/A')}")
+        print("Messages before LLM call:")
+        if state.get("messages"):
+            for i, msg in enumerate(state["messages"]):
+                try:
+                    print(f"  Msg {i} - Type: {msg.type}, Content: {msg.content}, ID: {msg.id}")
+                    if hasattr(msg, 'additional_kwargs'):
+                        print(f"    Additional Kwargs: {msg.additional_kwargs}")
+                    if hasattr(msg, 'tool_calls') and msg.tool_calls:
+                        print(f"    Tool Calls: {msg.tool_calls}")
+                except Exception as e:
+                    print(f"  Msg {i} - Error accessing message attributes: {e}")
+        else:
+            print("  No messages found in state.")
+        print(f"-------------------------------------------------")
+
         result = chain.invoke(state["messages"])
 
         return {

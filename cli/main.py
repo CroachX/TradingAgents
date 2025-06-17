@@ -1,6 +1,9 @@
 from typing import Optional
 import datetime
 import typer
+
+import langchain
+langchain.debug = True
 from rich.console import Console
 from rich.panel import Panel
 from rich.spinner import Spinner

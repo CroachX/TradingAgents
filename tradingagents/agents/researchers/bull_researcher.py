@@ -42,6 +42,15 @@ Reflections from similar situations and lessons learned: {past_memory_str}
 Use this information to deliver a compelling bull argument, refute the bear's concerns, and engage in a dynamic debate that demonstrates the strengths of the bull position. You must also address reflections and learn from lessons and mistakes you made in the past.
 """
 
+        print(f"--- Node: Bull Researcher ---")
+        print(f"Current Ticker: {state.get('company_of_interest', 'N/A')}")
+        print(f"Current Date: {state.get('trade_date', 'N/A')}")
+        print("Messages before LLM call:")
+        # This agent constructs a detailed prompt string rather than using a direct message list from state for the LLM
+        print(f"  Prompt being sent to LLM (first 200 chars): {prompt[:200]}...")
+        print(f"  Relevant state for prompt includes: market_report, sentiment_report, news_report, fundamentals_report, investment_debate_state history, and memories.")
+        print(f"-------------------------------------------------")
+
         response = llm.invoke(prompt)
 
         argument = f"Bull Analyst: {response.content}"
